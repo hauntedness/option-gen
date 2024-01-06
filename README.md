@@ -1,7 +1,8 @@
 # option-gen
 a option gen tool for convenience
-Promgram
-```
+
+use it in Promgram
+```go
 go test -v -run TestExecuteAny github.com/hauntedness/optiongen
 === RUN   TestExecuteAny
 === RUN   TestExecuteAny/github.com/hauntedness/optiongen/internal
@@ -40,7 +41,7 @@ ok      github.com/hauntedness/option-gen       1.376s
 
 
 Command line
-```shell
+```go
 go run github.com/hauntedness/optiongen/cmd -o callOptions -p github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
