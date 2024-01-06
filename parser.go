@@ -36,6 +36,7 @@ func LoadDefinition(packagePath string, typeName string, conf *packages.Config) 
 				g.Fields = append(g.Fields, field)
 			}
 		}
+		break
 	}
 	g.TypeName = typeName
 	return g, nil
