@@ -37,7 +37,7 @@ func ExecuteAny(value any, args ...Option) string {
 }
 
 func ExecuteType(typ reflect.Type, args ...Option) string {
-	return ExecuteString(typ.PkgPath(), typ.Name(), args...)
+	return ExecuteString(typ.Name(), typ.PkgPath(), args...)
 }
 
 func ExecuteString(typeName string, packagePath string, args ...Option) string {

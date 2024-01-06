@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hauntedness/option-gen/internal"
@@ -61,6 +62,8 @@ func TestExecuteAny(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ExecuteAny(tt.args.value, tt.args.args...); !tt.want(got) {
 				t.Errorf("ExecuteAny() = %v", got)
+			} else {
+				fmt.Println(got)
 			}
 		})
 	}
