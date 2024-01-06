@@ -1,10 +1,10 @@
-package main
+package optiongen
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/hauntedness/option-gen/internal"
+	"github.com/hauntedness/optiongen/internal"
 )
 
 func TestExecuteString(t *testing.T) {

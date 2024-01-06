@@ -1,4 +1,4 @@
-module github.com/hauntedness/option-gen
+module github.com/hauntedness/optiongen
 
 go 1.20
 

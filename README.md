@@ -2,9 +2,9 @@
 a option gen tool for convenience
 Promgram
 ```
-$ go test -v -run TestExecuteAny github.com/hauntedness/option-gen
+go test -v -run TestExecuteAny github.com/hauntedness/optiongen
 === RUN   TestExecuteAny
-=== RUN   TestExecuteAny/github.com/hauntedness/option-gen/internal
+=== RUN   TestExecuteAny/github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
 func (op *callOptions) ApplyOption(opts ...CallOption) {
@@ -33,7 +33,7 @@ var WithWriter = func(writer io.Writer) CallOption {
         }
 }
 --- PASS: TestExecuteAny (0.76s)
-    --- PASS: TestExecuteAny/github.com/hauntedness/option-gen/internal (0.76s)
+    --- PASS: TestExecuteAny/github.com/hauntedness/optiongen/internal (0.76s)
 PASS
 ok      github.com/hauntedness/option-gen       1.376s
 ```
@@ -41,7 +41,7 @@ ok      github.com/hauntedness/option-gen       1.376s
 
 Command line
 ```shell
-$ go run github.com/hauntedness/option-gen@latest -o callOptions -p github.com/hauntedness/option-gen/internal
+go run github.com/hauntedness/optiongen/cmd -o callOptions -p github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
 func (op *callOptions) ApplyOption(opts ...CallOption) {

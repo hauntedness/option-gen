@@ -1,8 +1,6 @@
-package main
+package optiongen
 
 import (
-	"flag"
-	"fmt"
 	"log"
 	"math"
 	"reflect"
@@ -10,15 +8,6 @@ import (
 
 	"golang.org/x/tools/go/packages"
 )
-
-func main() {
-	typeName := flag.String("o", "", "the type name to gen options")
-	packagePath := flag.String("p", ".", "the package name to gen options, default to current package")
-	varPostfix := flag.String("t", "", `specify the variables postfix, default ""`)
-	flag.Parse()
-	generated := ExecuteString(*typeName, *packagePath, WithPostfix(*varPostfix))
-	fmt.Println(generated)
-}
 
 type option struct {
 	postfix string

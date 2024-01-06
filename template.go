@@ -1,4 +1,4 @@
-package main
+package optiongen
 
 // type CallOption func(*callOptions)
 const templateOptionType = `type {{OptionTypeName .TypeName}} func(*{{.TypeName}})`
