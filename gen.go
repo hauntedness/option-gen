@@ -22,6 +22,10 @@ func (g Gen) FieldNameByIndex() string {
 	return g.Fields[g.Index].FieldName
 }
 
+func (g Gen) ParamNameByIndex() string {
+	return strings.ToLower(g.Fields[g.Index].FieldName[:1]) + g.Fields[g.Index].FieldName[1:]
+}
+
 func (g Gen) FieldTypeByIndex() string {
 	return g.Fields[g.Index].FieldType
 }

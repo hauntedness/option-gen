@@ -9,9 +9,9 @@ const templateOptionType = `type {{OptionTypeName .TypeName}} func(*{{.TypeName}
 //		}
 //	}
 const templateVariable = `
-var {{ OptionVarName .FieldNameByIndex .WithPostfix}} = func({{.FieldNameByIndex}} {{.FieldTypeByIndex}}) {{OptionTypeName .TypeName}} {
+var {{ OptionVarName .FieldNameByIndex .WithPostfix}} = func({{.ParamNameByIndex}} {{.FieldTypeByIndex}}) {{OptionTypeName .TypeName}} {
 	return func(op *{{.TypeName}}) {
-		op.{{.FieldNameByIndex}} = {{.FieldNameByIndex}}
+		op.{{.FieldNameByIndex}} = {{.ParamNameByIndex}}
 	}
 }`
 

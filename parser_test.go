@@ -20,9 +20,9 @@ func TestLoadDefinition(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "github.com/hauntedness/option-gen/internal",
+			name: "github.com/hauntedness/optiongen/internal",
 			args: args{
-				packagePath: "github.com/hauntedness/option-gen/internal",
+				packagePath: "github.com/hauntedness/optiongen/internal",
 				typeName:    "callOptions",
 			},
 			wantG: Gen{
