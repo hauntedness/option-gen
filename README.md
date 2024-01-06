@@ -42,7 +42,7 @@ ok      github.com/hauntedness/option-gen       1.376s
 
 Command line
 ```go
-go run github.com/hauntedness/optiongen/cmd -o callOptions -p github.com/hauntedness/optiongen/internal
+go run github.com/hauntedness/optiongen/cmd/optiongen -o callOptions -p github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
 func (op *callOptions) ApplyOption(opts ...CallOption) {
