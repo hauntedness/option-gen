@@ -19,10 +19,10 @@ func TestExecuteString(t *testing.T) {
 		want func(string) bool
 	}{
 		{
-			name: "github.com/hauntedness/option-gen/internal",
+			name: "github.com/hauntedness/optiongen/internal",
 			args: args{
 				typeName:    "callOptions",
-				packagePath: "github.com/hauntedness/option-gen/internal",
+				packagePath: "github.com/hauntedness/optiongen/internal",
 			},
 			want: func(got string) bool {
 				return got != ""
@@ -49,7 +49,7 @@ func TestExecuteAny(t *testing.T) {
 		want func(string) bool
 	}{
 		{
-			name: "github.com/hauntedness/option-gen/internal",
+			name: "github.com/hauntedness/optiongen/internal",
 			args: args{
 				value: internal.DefaultCallOption,
 			},

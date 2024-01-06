@@ -1,4 +1,4 @@
-# option-gen
+# optiongen
 a option gen tool for convenience
 
 use it in Promgram
@@ -36,7 +36,7 @@ var WithWriter = func(writer io.Writer) CallOption {
 --- PASS: TestExecuteAny (0.76s)
     --- PASS: TestExecuteAny/github.com/hauntedness/optiongen/internal (0.76s)
 PASS
-ok      github.com/hauntedness/option-gen       1.376s
+ok      github.com/hauntedness/optiongen       1.376s
 ```
 
 
