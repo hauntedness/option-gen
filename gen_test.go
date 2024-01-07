@@ -39,7 +39,7 @@ func TestGen_RenderOptionType(t *testing.T) {
 }
 
 var t1 = `
-func (op *callConfig) ApplyOption(opts ...CallOption) {
+func (op *callConfig) ApplyOptions(opts ...CallOption) {
 	for i := range opts {
 		opts[i](op)
 	}

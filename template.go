@@ -17,13 +17,13 @@ var {{ OptionVarName .FieldNameByIndex .WithPostfix}} = func({{.ParamNameByIndex
 
 // templateApplyFunc render a function that could apply options
 //
-//	func (op *callOptions) ApplyOption(opts ...CallOption) {
+//	func (op *callOptions) ApplyOptions(opts ...CallOption) {
 //		for i := range opts {
 //			opts[i](op)
 //		}
 //	}
 const templateApplyFunc = `
-func (op *{{.TypeName}}) ApplyOption(opts ...{{OptionTypeName .TypeName}}) {
+func (op *{{.TypeName}}) ApplyOptions(opts ...{{OptionTypeName .TypeName}}) {
 	for i := range opts {
 		opts[i](op)
 	}

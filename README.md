@@ -8,7 +8,7 @@ go test -v -run TestExecuteAny github.com/hauntedness/optiongen
 === RUN   TestExecuteAny/github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
-func (op *callOptions) ApplyOption(opts ...CallOption) {
+func (op *callOptions) ApplyOptions(opts ...CallOption) {
         for i := range opts {
                 opts[i](op)
         }
@@ -45,7 +45,7 @@ Command line
 go run github.com/hauntedness/optiongen/cmd/optiongen -o callOptions -p github.com/hauntedness/optiongen/internal
 
 type CallOption func(*callOptions)
-func (op *callOptions) ApplyOption(opts ...CallOption) {
+func (op *callOptions) ApplyOptions(opts ...CallOption) {
         for i := range opts {
                 opts[i](op)
         }
