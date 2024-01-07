@@ -49,7 +49,6 @@ func TodoImports(pkg *packages.Package) {
 		slog.Info("import", "k", k, "p", p)
 	}
 	for _, f := range pkg.Syntax {
-
 		if f != nil && f.Name != nil {
 			slog.Info("file", "name", f.Name.Name, "pos", f.Decls[0])
 		}

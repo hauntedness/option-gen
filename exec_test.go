@@ -23,6 +23,7 @@ func TestExecuteString(t *testing.T) {
 			args: args{
 				typeName:    "callOptions",
 				packagePath: "github.com/hauntedness/optiongen/internal",
+				args:        []Option{},
 			},
 			want: func(got string) bool {
 				return got != ""
