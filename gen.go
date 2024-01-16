@@ -11,6 +11,7 @@ type Gen struct {
 	Fields      []Field
 	Index       int
 	WithPostfix string
+	PackageName string
 }
 
 type Field struct {

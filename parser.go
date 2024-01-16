@@ -39,6 +39,7 @@ func LoadDefinition(packagePath string, typeName string, conf *packages.Config) 
 		break
 	}
 	g.TypeName = typeName
+	g.PackageName = pkg.Name
 	return g, nil
 }
 

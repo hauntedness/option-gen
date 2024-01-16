@@ -67,7 +67,7 @@ func ExecuteString(typeName string, packagePath string, args ...Option) string {
 	}
 	content := b.String()
 	if option.writeFile != "" {
-		err := os.WriteFile(option.writeFile, []byte(content), os.ModePerm)
+		err := os.WriteFile(option.writeFile, []byte("package "+g.PackageName+"\n\n"+content), os.ModePerm)
 		if err != nil {
 			log.Panic(err)
 		}

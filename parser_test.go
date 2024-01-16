@@ -47,6 +47,7 @@ func TestLoadDefinition(t *testing.T) {
 				},
 				Index:       0,
 				WithPostfix: "",
+				PackageName: "internal",
 			},
 			wantErr: false,
 		},
