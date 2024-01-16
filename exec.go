@@ -31,7 +31,7 @@ var WithWriteFile = func(writeFile string) func(o *option) {
 	}
 }
 
-var WithAutoimports = func(autoImports bool) func(o *option) {
+var WithAutoImports = func(autoImports bool) func(o *option) {
 	return func(o *option) {
 		o.autoImports = autoImports
 	}
