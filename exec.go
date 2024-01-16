@@ -8,11 +8,13 @@ import (
 	"strings"
 
 	"golang.org/x/tools/go/packages"
+	"golang.org/x/tools/imports"
 )
 
 type option struct {
-	postfix   string
-	writeFile string
+	postfix     string
+	writeFile   string
+	autoImports bool
 }
 
 type Option func(o *option)
@@ -26,6 +28,12 @@ var WithPostfix = func(postfix string) func(o *option) {
 var WithWriteFile = func(writeFile string) func(o *option) {
 	return func(o *option) {
 		o.writeFile = writeFile
+	}
+}
+
+var WithAutoimports = func(autoImports bool) func(o *option) {
+	return func(o *option) {
+		o.autoImports = autoImports
 	}
 }
 
@@ -67,7 +75,14 @@ func ExecuteString(typeName string, packagePath string, args ...Option) string {
 	}
 	content := b.String()
 	if option.writeFile != "" {
-		err := os.WriteFile(option.writeFile, []byte("package "+g.PackageName+"\n\n"+content), os.ModePerm)
+		file := []byte("package " + g.PackageName + "\n\n" + content)
+		if option.autoImports {
+			file, err = imports.Process("", file, nil)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+		err := os.WriteFile(option.writeFile, file, os.ModePerm)
 		if err != nil {
 			log.Panic(err)
 		}
