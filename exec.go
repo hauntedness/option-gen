@@ -1,11 +1,11 @@
 package optiongen
 
 import (
+	"bytes"
 	"log"
 	"math"
 	"os"
 	"reflect"
-	"strings"
 
 	"golang.org/x/tools/go/packages"
 	"golang.org/x/tools/imports"
@@ -51,12 +51,16 @@ func ExecuteString(typeName string, packagePath string, args ...Option) string {
 	if err != nil {
 		log.Panic(err)
 	}
-	var option option
+	option := option{autoImports: true}
 	for i := range args {
 		args[i](&option)
 	}
 	g.WithPostfix = option.postfix
-	b := &strings.Builder{}
+	b := &bytes.Buffer{}
+
+	b.WriteString("package ")
+	b.WriteString(g.PackageName)
+	b.WriteString("\n\n\n")
 	// gen declare option type
 	str := g.RenderOptionType()
 	b.WriteString("\n\n")
@@ -73,19 +77,18 @@ func ExecuteString(typeName string, packagePath string, args ...Option) string {
 		str = clone.RenderOptionVariable()
 		b.WriteString(str)
 	}
-	content := b.String()
-	if option.writeFile != "" {
-		file := []byte("package " + g.PackageName + "\n\n" + content)
-		if option.autoImports {
-			file, err = imports.Process("", file, nil)
-			if err != nil {
-				log.Fatal(err)
-			}
+	content := b.Bytes()
+	if option.autoImports {
+		content, err = imports.Process("", content, nil)
+		if err != nil {
+			log.Fatal(err)
 		}
-		err := os.WriteFile(option.writeFile, file, os.ModePerm)
+	}
+	if option.writeFile != "" {
+		err := os.WriteFile(option.writeFile, content, os.ModePerm)
 		if err != nil {
 			log.Panic(err)
 		}
 	}
-	return content
+	return string(content)
 }

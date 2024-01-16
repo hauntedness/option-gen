@@ -9,13 +9,16 @@ import (
 )
 
 func main() {
-	typeName := flag.String("o", "", "the type name to gen options")
-	packagePath := flag.String("p", ".", "the package name to gen options, default to current package")
-	varPostfix := flag.String("t", "", `specify the variables postfix, default ""`)
+	typeName := flag.String("type", "", "the type name to gen options")
+	packagePath := flag.String("package", ".", "the package name to gen options, default to current package")
+	postfix := flag.String("postfix", "", `specify the variables postfix, default ""`)
+	writeFile := flag.String("writeFile", "", "specify which file writes to, default no write")
+	autoImport := flag.Bool("autoImport", true, "organize import automatically")
 	flag.Parse()
 	if *typeName == "" {
 		log.Fatal("type name is mandatory: optiongen -o someoption")
 	}
-	generated := optiongen.ExecuteString(*typeName, *packagePath, optiongen.WithPostfix(*varPostfix))
+	opts := []optiongen.Option{optiongen.WithPostfix(*postfix), optiongen.WithAutoimports(*autoImport), optiongen.WithWriteFile(*writeFile)}
+	generated := optiongen.ExecuteString(*typeName, *packagePath, opts...)
 	fmt.Println(generated)
 }
