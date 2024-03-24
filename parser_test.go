@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/hauntedness/optiongen/internal"
 	"golang.org/x/tools/go/packages"
 )
 
@@ -44,6 +45,10 @@ func TestLoadDefinition(t *testing.T) {
 						FieldName: "writer",
 						FieldType: "io.Writer",
 					},
+					{
+						FieldName: "number",
+						FieldType: "json.Number",
+					},
 				},
 				Index:       0,
 				WithPostfix: "",
@@ -63,5 +68,19 @@ func TestLoadDefinition(t *testing.T) {
 				t.Errorf("LoadDefinition() = %v, want %v", gotG, tt.wantG)
 			}
 		})
+	}
+}
+
+func TestTodoImports(t *testing.T) {
+	var typ internal.SomeType
+	type_ := reflect.TypeOf(typ)
+	pkgs, err := packages.Load(&packages.Config{Mode: math.MaxInt}, type_.PkgPath())
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	files := Files(pkgs[0])
+	for _, file := range files {
+		file.Print()
 	}
 }

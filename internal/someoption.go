@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"encoding/json"
 	"io"
 )
 
@@ -11,6 +12,7 @@ type callOptions struct {
 	stringField    string
 	interfaceField interface{}
 	writer         io.Writer
+	number         json.Number
 }
 
 var DefaultCallOption = callOptions{}
@@ -38,6 +40,12 @@ var WithInterfaceField = func(interfaceField interface{}) CallOption {
 var WithWriter = func(writer io.Writer) CallOption {
 	return func(op *callOptions) {
 		op.writer = writer
+	}
+}
+
+var WithNumber = func(number json.Number) CallOption {
+	return func(op *callOptions) {
+		op.number = number
 	}
 }
 

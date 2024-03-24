@@ -1,9 +1,13 @@
 package optiongen
 
 import (
+	"cmp"
 	"fmt"
+	"go/ast"
+	"go/token"
 	"go/types"
 	"log/slog"
+	"slices"
 
 	"golang.org/x/tools/go/packages"
 )
@@ -31,7 +35,14 @@ func LoadDefinition(packagePath string, typeName string, conf *packages.Config) 
 			}
 			for i := 0; i < st.NumFields(); i++ {
 				v := st.Field(i)
-				field := Field{FieldName: v.Name(), FieldType: v.Origin().Type().String()}
+				fieldType := v.Origin().Type()
+				fieldTypeString := types.TypeString(fieldType, func(p *types.Package) string {
+					if p == nil || p.Path() == pkg.PkgPath {
+						return ""
+					}
+					return p.Name()
+				})
+				field := Field{FieldName: v.Name(), FieldType: fieldTypeString}
 				slog.Debug("Field", "detail", field, "pos", v.Pos())
 				g.Fields = append(g.Fields, field)
 			}
@@ -45,27 +56,72 @@ func LoadDefinition(packagePath string, typeName string, conf *packages.Config) 
 
 // TODO: currently, the implementation doesn't understand package alias
 // implement this function in future need
-func TodoImports(pkg *packages.Package) {
-	for k, p := range pkg.Imports {
-		slog.Info("import", "k", k, "p", p)
-	}
+func Files(pkg *packages.Package) files {
+	files := make([]file, 0, 20)
 	for _, f := range pkg.Syntax {
-		if f != nil && f.Name != nil {
-			slog.Info("file", "name", f.Name.Name, "pos", f.Decls[0])
+		if f == nil {
+			continue
 		}
-		for _, is := range f.Imports {
-			if is == nil {
-				continue
-			}
-			name := ""
+		var file file
+		file.filename = pkg.Fset.File(f.Pos()).Name()
+		file.pos = f.Pos()
+		file.imports = f.Imports
+		files = append(files, file)
+	}
+	slices.SortFunc(files, func(f1, f2 file) int {
+		return cmp.Compare(f1.pos, f2.pos)
+	})
+	return files
+}
+
+type file struct {
+	filename string
+	imports  []*ast.ImportSpec
+	pos      token.Pos
+}
+
+func (f file) Print() {
+	slog.Info(f.filename, "pos", f.pos)
+	for _, is := range f.imports {
+		if is == nil {
+			continue
+		}
+		alias := ""
+		if is.Name != nil {
+			alias = is.Name.Name
+		}
+		path := ""
+		if is.Path != nil {
+			path = is.Path.Value
+		}
+		slog.Info("syntax import", "alias", alias, "path", path)
+	}
+}
+
+func (f file) ImportName(pkg string) (string, bool) {
+	for _, is := range f.imports {
+		if is == nil {
+			continue
+		}
+		if is.Path != nil && is.Path.Value == pkg {
 			if is.Name != nil {
-				name = is.Name.Name
+				return is.Name.Name, true
 			}
-			path := ""
-			if is.Path != nil {
-				path = is.Path.Value
-			}
-			slog.Info("syntax import", "name", name, "path", path)
 		}
 	}
+	return "", false
+}
+
+type files []file
+
+func (fs files) Search(pos token.Pos) (file, bool) {
+	p, _ := slices.BinarySearchFunc(fs, pos, func(f1 file, t token.Pos) int {
+		return cmp.Compare(f1.pos, t)
+	})
+	if p < int(fs[p].pos) {
+		return fs[p+1], true
+	} else if p > int(fs[p].pos) {
+		return fs[p], true
+	}
+	return file{}, false
 }
