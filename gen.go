@@ -31,6 +31,13 @@ func (g Gen) FieldTypeByIndex() string {
 	return g.Fields[g.Index].FieldType
 }
 
+func (g Gen) ParamTypeByIndex() string {
+	//
+	typ := g.Fields[g.Index].FieldType
+	typ = strings.Replace(typ, "[]", "...", 1)
+	return typ
+}
+
 func (g Gen) RenderOptionType() string {
 	return g.Render(templateOptionType)
 }
