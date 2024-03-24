@@ -34,7 +34,9 @@ func (g Gen) FieldTypeByIndex() string {
 func (g Gen) ParamTypeByIndex() string {
 	//
 	typ := g.Fields[g.Index].FieldType
-	typ = strings.Replace(typ, "[]", "...", 1)
+	if strings.HasPrefix(typ, "[]") {
+		typ = strings.Replace(typ, "[]", "...", 1)
+	}
 	return typ
 }
 
