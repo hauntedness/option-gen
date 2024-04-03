@@ -2,10 +2,12 @@
 a option gen tool for convenience
 
 use it in Promgram
-```go
+```shell
 go test -v -run TestExecuteAny github.com/hauntedness/optiongen
 === RUN   TestExecuteAny
 === RUN   TestExecuteAny/github.com/hauntedness/optiongen/internal
+```
+```go
 package internal
 
 import "io"
@@ -50,8 +52,10 @@ ok      github.com/hauntedness/optiongen        1.468s
 
 
 Command line
-```go
+```shell
 go run github.com/hauntedness/optiongen/cmd/optiongen --type callOptions -package github.com/hauntedness/optiongen/internal
+```
+```go
 
 package internal
 
