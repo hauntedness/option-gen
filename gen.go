@@ -10,6 +10,7 @@ type Gen struct {
 	TypeName    string
 	Fields      []Field
 	Index       int
+	WithPrefix  string
 	WithPostfix string
 	PackageName string
 }

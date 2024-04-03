@@ -54,6 +54,7 @@ func TestOptionTypeName(t *testing.T) {
 func TestOptionVarName(t *testing.T) {
 	type args struct {
 		fieldName string
+		prefix    string
 		postfix   string
 	}
 	tests := []struct {
@@ -77,6 +78,23 @@ func TestOptionVarName(t *testing.T) {
 			want: "WithStringFieldOption",
 		},
 		{
+			name: "prefix",
+			args: args{
+				fieldName: "StringField",
+				prefix:    "Pre",
+			},
+			want: "WithPreStringField",
+		},
+		{
+			name: "prefix_postfix",
+			args: args{
+				fieldName: "StringField",
+				prefix:    "Pre",
+				postfix:   "Option",
+			},
+			want: "WithPreStringFieldOption",
+		},
+		{
 			name: "underline",
 			args: args{
 				fieldName: "_intField",
@@ -86,7 +104,7 @@ func TestOptionVarName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := OptionVarName(tt.args.fieldName, tt.args.postfix); got != tt.want {
+			if got := OptionVarName(tt.args.fieldName, tt.args.prefix, tt.args.postfix); got != tt.want {
 				t.Errorf("OptionVarName() = %v, want %v", got, tt.want)
 			}
 		})

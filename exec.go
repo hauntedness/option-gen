@@ -12,12 +12,19 @@ import (
 )
 
 type option struct {
+	prefix      string
 	postfix     string
 	writeFile   string
 	autoImports bool
 }
 
 type Option func(o *option)
+
+var WithPrefix = func(prefix string) func(o *option) {
+	return func(o *option) {
+		o.prefix = prefix
+	}
+}
 
 var WithPostfix = func(postfix string) func(o *option) {
 	return func(o *option) {
@@ -56,6 +63,7 @@ func ExecuteString(typeName string, packagePath string, args ...Option) string {
 		args[i](&option)
 	}
 	g.WithPostfix = option.postfix
+	g.WithPrefix = option.prefix
 	b := &bytes.Buffer{}
 
 	b.WriteString("package ")

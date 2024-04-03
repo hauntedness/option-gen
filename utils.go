@@ -23,6 +23,6 @@ func OptionTypeName(applyeeName string) string {
 }
 
 // OptionVarName give the option variable a proper name
-func OptionVarName(fieldName, postfix string) string {
-	return "With" + strings.ToTitle(fieldName[0:1]) + fieldName[1:] + postfix
+func OptionVarName(fieldName, prefix, postfix string) string {
+	return "With" + prefix + strings.ToTitle(fieldName[0:1]) + fieldName[1:] + postfix
 }

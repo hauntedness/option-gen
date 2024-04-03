@@ -85,6 +85,13 @@ var WithSomeIntSomehow = func(someInt int) CallOption {
 	}
 }`
 
+const t4 = `
+var WithSomePrefixSomeInt = func(someInt int) CallOption {
+	return func(op *callConfig) {
+		op.someInt = someInt
+	}
+}`
+
 func TestGen_RenderOptionVariable(t *testing.T) {
 	type args struct {
 		g Gen
@@ -95,7 +102,7 @@ func TestGen_RenderOptionVariable(t *testing.T) {
 		want string
 	}{
 		{
-			name: "callConfig",
+			name: "callConfig2",
 			args: args{
 				g: Gen{
 					TypeName: "callConfig",
@@ -115,7 +122,7 @@ func TestGen_RenderOptionVariable(t *testing.T) {
 			want: strings.TrimLeft(t2, "\n"),
 		},
 		{
-			name: "callConfig",
+			name: "callConfig3",
 			args: args{
 				g: Gen{
 					TypeName: "callConfig",
@@ -135,11 +142,32 @@ func TestGen_RenderOptionVariable(t *testing.T) {
 			},
 			want: strings.TrimLeft(t3, "\n"),
 		},
+		{
+			name: "callConfig4",
+			args: args{
+				g: Gen{
+					TypeName: "callConfig",
+					Fields: []Field{
+						{
+							FieldName: "someField",
+							FieldType: "string",
+						},
+						{
+							FieldName: "someInt",
+							FieldType: "int",
+						},
+					},
+					Index:      1,
+					WithPrefix: "SomePrefix",
+				},
+			},
+			want: strings.TrimLeft(t4, "\n"),
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.args.g.RenderOptionVariable(); got != tt.want {
-				t.Errorf("Gen.RenderApplyFunc() = %v, want %v", got, tt.want)
+				t.Errorf("Gen.RenderOptionVariable() = %v, want %v", got, tt.want)
 			}
 		})
 	}
