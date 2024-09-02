@@ -39,9 +39,9 @@ func TestGen_RenderOptionType(t *testing.T) {
 }
 
 var t1 = `
-func (op *callConfig) ApplyOptions(opts ...CallOption) {
+func (c *callConfig) ApplyOptions(opts ...CallOption) {
 	for i := range opts {
-		opts[i](op)
+		opts[i](c)
 	}
 }`
 
@@ -73,22 +73,22 @@ func TestGen_RenderApplyFunc(t *testing.T) {
 
 const t2 = `
 var WithSomeInt = func(someInt int) CallOption {
-	return func(op *callConfig) {
-		op.someInt = someInt
+	return func(c *callConfig) {
+		c.someInt = someInt
 	}
 }`
 
 const t3 = `
 var WithSomeIntSomehow = func(someInt int) CallOption {
-	return func(op *callConfig) {
-		op.someInt = someInt
+	return func(c *callConfig) {
+		c.someInt = someInt
 	}
 }`
 
 const t4 = `
 var WithSomePrefixSomeInt = func(someInt int) CallOption {
-	return func(op *callConfig) {
-		op.someInt = someInt
+	return func(c *callConfig) {
+		c.someInt = someInt
 	}
 }`
 

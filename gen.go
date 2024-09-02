@@ -41,6 +41,10 @@ func (g Gen) ParamTypeByIndex() string {
 	return typ
 }
 
+func (g Gen) ReceiverName() string {
+	return strings.ToLower(g.TypeName[:1])
+}
+
 func (g Gen) RenderOptionType() string {
 	return g.Render(templateOptionType)
 }
@@ -53,10 +57,15 @@ func (g Gen) RenderOptionVariable() string {
 	return g.Render(templateVariable[1:])
 }
 
+func (g Gen) RenderChainFunc() string {
+	return g.Render(templateChainFunc[1:])
+}
+
 func (g Gen) Render(tmpl string) string {
 	t := template.New("f").Funcs(template.FuncMap{
-		"OptionTypeName": OptionTypeName,
-		"OptionVarName":  OptionVarName,
+		"OptionTypeName":  OptionTypeName,
+		"OptionVarName":   OptionVarName,
+		"BuilderFuncName": BuilderFuncName,
 	})
 	t, err := t.Parse(tmpl)
 	if err != nil {

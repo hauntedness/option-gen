@@ -26,3 +26,8 @@ func OptionTypeName(applyeeName string) string {
 func OptionVarName(fieldName, prefix, postfix string) string {
 	return "With" + prefix + strings.ToTitle(fieldName[0:1]) + fieldName[1:] + postfix
 }
+
+// BuilderFuncName give the input variable a proper name
+func BuilderFuncName(fieldName, prefix, postfix string) string {
+	return prefix + strings.ToTitle(fieldName[0:1]) + fieldName[1:] + postfix
+}

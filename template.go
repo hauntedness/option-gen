@@ -4,14 +4,14 @@ package optiongen
 const templateOptionType = `type {{OptionTypeName .TypeName}} func(*{{.TypeName}})`
 
 //	var WithIntField = func(intField int) CallOption {
-//		return func(op *callOptions) {
-//			op.intField = intField
+//		return func(c *callOptions) {
+//			c.intField = intField
 //		}
 //	}
 const templateVariable = `
 var {{ OptionVarName .FieldNameByIndex .WithPrefix .WithPostfix}} = func({{.ParamNameByIndex}} {{.ParamTypeByIndex}}) {{OptionTypeName .TypeName}} {
-	return func(op *{{.TypeName}}) {
-		op.{{.FieldNameByIndex}} = {{.ParamNameByIndex}}
+	return func({{.ReceiverName}} *{{.TypeName}}) {
+		{{.ReceiverName}}.{{.FieldNameByIndex}} = {{.ParamNameByIndex}}
 	}
 }`
 
@@ -23,8 +23,20 @@ var {{ OptionVarName .FieldNameByIndex .WithPrefix .WithPostfix}} = func({{.Para
 //		}
 //	}
 const templateApplyFunc = `
-func (op *{{.TypeName}}) ApplyOptions(opts ...{{OptionTypeName .TypeName}}) {
+func ({{.ReceiverName}} *{{.TypeName}}) ApplyOptions(opts ...{{OptionTypeName .TypeName}}) {
 	for i := range opts {
-		opts[i](op)
+		opts[i]({{.ReceiverName}})
 	}
+}`
+
+// templateChainFunc render a function that could chain the property setters.
+//
+//	func (c *CallConfig) Name(name string) *CallConfig {
+//		c.name = name
+//		return c
+//	}
+const templateChainFunc = `
+func ({{.ReceiverName}} *{{.TypeName}}) {{BuilderFuncName .FieldNameByIndex .WithPrefix .WithPostfix}}({{.ParamNameByIndex}} {{.ParamTypeByIndex}}) *{{.TypeName}} {
+	{{.ReceiverName}}.{{.FieldNameByIndex}} = {{.ParamNameByIndex}}
+	return {{.ReceiverName}}
 }`
