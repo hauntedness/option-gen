@@ -54,6 +54,59 @@ func LoadDefinition(packagePath string, typeName string, conf *packages.Config) 
 	return g, nil
 }
 
+func LoadDefinitions(packagePath string, typeList []string, conf *packages.Config) (gs []Gen, err error) {
+	pkgs, err := packages.Load(conf, packagePath)
+	if err != nil {
+		return nil, err
+	}
+	if len(pkgs) != 1 {
+		return nil, fmt.Errorf("package load: pkg not found")
+	}
+	pkg := pkgs[0]
+	for ident, obj := range pkg.TypesInfo.Defs {
+		if obj == nil || ident == nil {
+			continue
+		}
+		if !slices.Contains(typeList, obj.Name()) {
+			continue
+		}
+		g := Gen{}
+		g.TypeName = obj.Name()
+		g.PackageName = pkg.Name
+		if named, ok := obj.Type().(*types.Named); ok {
+			st, ok := named.Underlying().(*types.Struct)
+			if !ok {
+				return nil, fmt.Errorf("not a struct type: %v", named)
+			}
+			for i := 0; i < st.NumFields(); i++ {
+				v := st.Field(i)
+				fieldType := v.Origin().Type()
+				fieldTypeString := types.TypeString(fieldType, func(p *types.Package) string {
+					if p == nil || p.Path() == pkg.PkgPath {
+						return ""
+					}
+					return p.Name()
+				})
+				field := Field{FieldName: v.Name(), FieldType: fieldTypeString}
+				slog.Debug("Field", "detail", field, "pos", v.Pos())
+				g.Fields = append(g.Fields, field)
+			}
+		}
+		gs = append(gs, g)
+		break
+	}
+
+	if len(typeList) != len(gs) {
+		var names []string
+		for i := range gs {
+			names = append(names, gs[i].TypeName)
+		}
+		return gs, fmt.Errorf("some types were missing in generation. given: %v, found: %v", typeList, names)
+	}
+
+	return gs, nil
+}
+
 // TODO: currently, the implementation doesn't understand package alias
 // implement this function in future need
 func Files(pkg *packages.Package) files {
