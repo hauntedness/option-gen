@@ -159,36 +159,25 @@ func ExecuteAllString(typeNames []string, packagePath string, args ...Option) st
 	for i := range args {
 		args[i](&option)
 	}
+	if !option.builderMode {
+		log.Panic(fmt.Errorf("Only support builder mode for batch generation."))
+	}
 	b.WriteString("package " + gs[0].PackageName)
 	b.WriteString("\n\n\n")
 	for _, g := range gs {
 		g.WithPostfix = option.postfix
 		g.WithPrefix = option.prefix
 
-		// gen declare option type
-		if !option.builderMode {
-			str := g.RenderOptionType()
-			b.WriteString("\n\n")
-			b.WriteString(str)
-		}
 		// gen apply func
 		b.WriteString("\n\n")
-		if !option.builderMode {
-			str := g.RenderApplyFunc()
-			b.WriteString(str)
-		}
+
 		// gen options
 		for i := range g.Fields {
 			clone := g
 			clone.Index = i
 			b.WriteString("\n\n")
-			if option.builderMode {
-				str := clone.RenderChainFunc()
-				b.WriteString(str)
-			} else {
-				str := clone.RenderOptionVariable()
-				b.WriteString(str)
-			}
+			str := clone.RenderChainFunc()
+			b.WriteString(str)
 		}
 		b.WriteString("\n\n\n")
 	}
