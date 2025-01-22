@@ -93,7 +93,6 @@ func LoadDefinitions(packagePath string, typeList []string, conf *packages.Confi
 			}
 		}
 		gs = append(gs, g)
-		break
 	}
 
 	if len(typeList) != len(gs) {
