@@ -155,7 +155,7 @@ func ExecuteAllString(typeNames []string, packagePath string, args ...Option) st
 		log.Panic(fmt.Errorf("require at least 1 type name."))
 	}
 	b := &bytes.Buffer{}
-	option := option{autoImports: true}
+	option := option{autoImports: true, builderMode: true}
 	for i := range args {
 		args[i](&option)
 	}
